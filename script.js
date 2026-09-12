@@ -1,160 +1,119 @@
 async function analyzeResume() {
+  const resume = document.getElementById("resume").files[0];
 
-    const resume =
-        document.getElementById("resume").files[0];
+  const jobRole = document.getElementById("jobRole").value;
 
-    const jobRole =
-        document.getElementById("jobRole").value;
+  const status = document.getElementById("status");
 
-    const status =
-        document.getElementById("status");
+  if (!resume) {
+    status.innerText = "Please upload your resume.";
+    return;
+  }
 
-    if (!resume) {
-        status.innerText = "Please upload your resume.";
-        return;
+  if (!jobRole) {
+    status.innerText = "Please enter a job role.";
+    return;
+  }
+
+  status.innerText = "Analyzing your resume... ✨";
+
+  const formData = new FormData();
+
+  formData.append("resume", resume);
+  formData.append("job_role", jobRole);
+
+  try {
+    const API_URL =
+      window.location.hostname === "127.0.0.1" ||
+      window.location.hostname === "localhost"
+        ? "http://127.0.0.1:8000"
+        : "";
+
+    const response = await fetch(`${API_URL}/api/analyze`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const contentType = response.headers.get("content-type");
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("SERVER ERROR:", errorText);
+
+      status.innerText = `Server error ${response.status}: ${errorText}`;
+
+      return;
     }
 
-    if (!jobRole) {
-        status.innerText = "Please enter a job role.";
-        return;
+    if (!contentType || !contentType.includes("application/json")) {
+      const text = await response.text();
+      console.error("NON-JSON RESPONSE:", text);
+
+      status.innerText = "Server returned an invalid response.";
+
+      return;
     }
 
-    status.innerText =
-        "Analyzing your resume... ✨";
+    const data = await response.json();
 
-
-    const formData = new FormData();
-
-    formData.append("resume", resume);
-    formData.append("job_role", jobRole);
-
-
-    try {
-
-        const API_URL =
-            window.location.hostname === "127.0.0.1" ||
-            window.location.hostname === "localhost"
-                ? "http://127.0.0.1:8000"
-                : "";
-
-        const response = await fetch(`${API_URL}/api/analyze`, {
-            method: "POST",
-            body: formData
-        });
-
-        const data = await response.json();
-
-
-        if (data.error) {
-
-            status.innerText = data.error;
-            return;
-
-        }
-
-
-        displayResults(data);
-
-        status.innerText =
-            "Analysis complete! ✨";
-
+    if (data.error) {
+      status.innerText = data.error;
+      return;
     }
 
-    catch (error) {
-        console.error("ERROR:", error);
-        status.innerText = "Error: " + error.message;
-    }
+    displayResults(data);
+
+    status.innerText = "Analysis complete! ✨";
+  } catch (error) {
+    console.error("ERROR:", error);
+    status.innerText = "Error: " + error.message;
+  }
 }
-
 
 function displayResults(data) {
+  document.getElementById("results").classList.remove("hidden");
 
-    document
-        .getElementById("results")
-        .classList.remove("hidden");
+  document.getElementById("score").innerText = data.ats_score;
 
+  document.getElementById("summary").innerText = data.summary;
 
-    document
-        .getElementById("score")
-        .innerText = data.ats_score;
+  displaySkills("matchedSkills", data.matched_skills);
 
+  displaySkills("missingSkills", data.missing_skills);
 
-    document
-        .getElementById("summary")
-        .innerText = data.summary;
+  displayList("strengths", data.strengths);
 
+  displayList("weaknesses", data.weaknesses);
 
-    displaySkills(
-        "matchedSkills",
-        data.matched_skills
-    );
-
-
-    displaySkills(
-        "missingSkills",
-        data.missing_skills
-    );
-
-
-    displayList(
-        "strengths",
-        data.strengths
-    );
-
-
-    displayList(
-        "weaknesses",
-        data.weaknesses
-    );
-
-
-    displayList(
-        "suggestions",
-        data.suggestions
-    );
-
+  displayList("suggestions", data.suggestions);
 }
-
 
 function displaySkills(id, skills) {
+  const container = document.getElementById(id);
 
-    const container =
-        document.getElementById(id);
+  container.innerHTML = "";
 
-    container.innerHTML = "";
+  skills.forEach((skill) => {
+    const span = document.createElement("span");
 
-    skills.forEach(skill => {
+    span.className = "skill";
 
-        const span =
-            document.createElement("span");
+    span.innerText = skill;
 
-        span.className = "skill";
-
-        span.innerText = skill;
-
-        container.appendChild(span);
-
-    });
-
+    container.appendChild(span);
+  });
 }
 
-
 function displayList(id, items) {
+  const list = document.getElementById(id);
 
-    const list =
-        document.getElementById(id);
+  list.innerHTML = "";
 
-    list.innerHTML = "";
+  items.forEach((item) => {
+    const li = document.createElement("li");
 
-    items.forEach(item => {
+    li.innerText = item;
 
-        const li =
-            document.createElement("li");
-
-        li.innerText = item;
-
-        list.appendChild(li);
-
-    });
-
+    list.appendChild(li);
+  });
 }
