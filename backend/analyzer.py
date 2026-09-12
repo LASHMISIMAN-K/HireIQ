@@ -3,23 +3,19 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from openai import OpenAI
+from google import genai
+from google.genai import types
 
 
 # Load .env
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
-api_key = os.getenv("OLLAMA_API_KEY")
+api_key = os.getenv("GEMINI_API_KEY")
 
-print("API KEY LOADED:", bool(api_key))
+print("GEMINI API KEY LOADED:", bool(api_key))
 
-
-# Ollama Cloud
-client = OpenAI(
-    base_url="https://ollama.com/v1",
-    api_key=api_key
-)
+client = genai.Client(api_key=api_key)
 
 
 def analyze_Resume(resume_text, job_role):
@@ -35,13 +31,9 @@ TARGET JOB ROLE:
 RESUME:
 {resume_text}
 
-Return ONLY a JSON object.
+Analyze the candidate specifically for the target job role.
 
-Do NOT use markdown.
-Do NOT use ```json.
-Do NOT add explanations.
-
-The JSON must have exactly these fields:
+Return the result as JSON with exactly these fields:
 
 {{
     "ats_score": 0,
@@ -57,73 +49,40 @@ Rules:
 
 - ats_score must be an integer between 0 and 100.
 - matched_skills must contain skills actually found in the resume.
-- missing_skills must contain relevant skills not found in the resume.
+- missing_skills must contain relevant skills required or commonly expected for the target role but not found in the resume.
 - strengths must be supported by the resume.
 - weaknesses must identify genuine gaps.
 - suggestions must provide practical improvements.
+- Be realistic and specific.
 """
-
 
     try:
 
-        response = client.chat.completions.create(
-            model="gpt-oss:20b",
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            temperature=0.1,
-            response_format={"type": "json_object"}
+        response = client.models.generate_content(
+            model="gemini-3.6-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                temperature=0.1,
+                response_mime_type="application/json"
+            )
         )
 
-        result = response.choices[0].message.content
+        result = response.text
 
-        print("\n========== AI RESPONSE ==========")
+        print("\n========== GEMINI RESPONSE ==========")
         print(result)
-        print("=================================\n")
-
+        print("=====================================\n")
 
         if not result:
             return {
-                "error": "AI returned an empty response."
+                "error": "Gemini returned an empty response."
             }
 
-
-        result = result.strip()
-
-
-        # Remove markdown if model still adds it
-        if result.startswith("```json"):
-            result = result[7:]
-
-        elif result.startswith("```"):
-            result = result[3:]
-
-        if result.endswith("```"):
-            result = result[:-3]
-
-        result = result.strip()
-
-
-        try:
-            return json.loads(result)
-
-        except json.JSONDecodeError:
-
-            print("JSON ERROR")
-            print("Raw AI response:")
-            print(result)
-
-            return {
-                "error": "AI returned an invalid JSON response."
-            }
-
+        return json.loads(result)
 
     except Exception as e:
 
-        print("OLLAMA ERROR:")
+        print("GEMINI ERROR:")
         print(str(e))
 
         return {
