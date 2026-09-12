@@ -37,11 +37,10 @@ async function analyzeResume() {
                 ? "http://127.0.0.1:8000"
                 : "";
 
-        const response = await fetch(`${API_URL}/analyze`, {
+        const response = await fetch(`${API_URL}/api/analyze`, {
             method: "POST",
             body: formData
         });
-
 
         const data = await response.json();
 
