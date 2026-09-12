@@ -23,13 +23,7 @@ async function analyzeResume() {
   formData.append("job_role", jobRole);
 
   try {
-    const API_URL =
-      window.location.hostname === "127.0.0.1" ||
-      window.location.hostname === "localhost"
-        ? "http://127.0.0.1:8000"
-        : "";
-
-    const response = await fetch(`${API_URL}/api/analyze`, {
+    const response = await fetch("/api/analyze", {
       method: "POST",
       body: formData,
     });
