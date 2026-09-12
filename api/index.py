@@ -17,14 +17,14 @@ app.add_middleware(
 )
 
 
-@app.get("/")
+@app.get("/api")
 def home():
     return {
         "message": "Welcome to HireIQ API is running 🚀!"
     }
 
 
-@app.post("/analyze")
+@app.post("/api/analyze")
 async def analyze(
     resume: UploadFile = File(...),
     job_role: str = Form(...)
