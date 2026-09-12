@@ -31,13 +31,16 @@ async function analyzeResume() {
 
     try {
 
-        const response = await fetch(
-            "/analyze",
-            {
-                method: "POST",
-                body: formData
-            }
-        );
+        const API_URL =
+            window.location.hostname === "127.0.0.1" ||
+            window.location.hostname === "localhost"
+                ? "http://127.0.0.1:8000"
+                : "";
+
+        const response = await fetch(`${API_URL}/analyze`, {
+            method: "POST",
+            body: formData
+        });
 
 
         const data = await response.json();
