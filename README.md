@@ -1,84 +1,162 @@
-HireIQ
+# 🚀 HireIQ
 
-HireIQ is an AI-powered resume analyzer that helps job seekers understand how well their resume matches a target job role. It extracts text from PDF resumes and uses Google Gemini AI to generate an ATS-style score, matched skills, missing skills, strengths, weaknesses, and practical improvement suggestions.
+> **Turn your resume into your career roadmap.**
 
-Features
+HireIQ is an AI-powered resume analyzer built to help students, fresh graduates, and job seekers understand how well their resume matches a target job role.
 
-PDF resume upload
+Instead of simply telling you whether your resume is "good" or "bad", HireIQ breaks it down into an actionable career report using **Google Gemini AI**.
 
-Target job role matching
+---
 
-AI-powered resume analysis
+## ✨ What is HireIQ?
 
-ATS-style score from 0–100
+Finding out why a resume is not getting shortlisted can be difficult.
 
-Matched and missing skills
+HireIQ solves this by allowing a user to:
 
-Resume strengths and weaknesses
+```text
+📄 Upload Resume
+       +
+🎯 Enter Target Job Role
+       ↓
+   🤖 HireIQ AI
+       ↓
+┌─────────────────────────┐
+│      ATS Score          │
+│      Matched Skills     │
+│      Missing Skills     │
+│      Strengths          │
+│      Weaknesses         │
+│      Suggestions        │
+└─────────────────────────┘
+       ↓
+🚀 Improve → Apply → Grow
+```
 
-Actionable improvement suggestions
+---
 
-User registration and login
+## 🌟 Key Features
 
-JWT authentication
+| Feature | Description |
+|---|---|
+| 📄 Resume Upload | Upload your resume in PDF format |
+| 🎯 Role Matching | Analyze your resume for a specific target role |
+| 🤖 Gemini AI | Uses Google Gemini for intelligent resume analysis |
+| 📊 ATS Score | Generates an ATS-style score from 0–100 |
+| ✅ Matched Skills | Shows skills already relevant to the target role |
+| ❌ Missing Skills | Identifies relevant skills that are missing |
+| 💪 Strengths | Highlights strong areas in your resume |
+| ⚠️ Weaknesses | Identifies potential gaps |
+| 💡 Suggestions | Provides practical ways to improve |
+| 🔐 Authentication | Secure registration and login |
+| 🔑 JWT | Protects authenticated API endpoints |
+| 🎨 Glassmorphism UI | Modern dark SaaS-style interface |
+| ☁️ Vercel Ready | Designed for web deployment |
 
-Argon2 password hashing
+---
 
-Glassmorphism UI
+## 🧠 How HireIQ Works
 
-FastAPI backend
+```text
+                    ┌──────────────────┐
+                    │      USER        │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                  ┌─────────────────────┐
+                  │ Register / Login     │
+                  └──────────┬──────────┘
+                             │
+                             ▼
+                  ┌─────────────────────┐
+                  │ JWT Authentication  │
+                  └──────────┬──────────┘
+                             │
+                             ▼
+                  ┌─────────────────────┐
+                  │ HireIQ Dashboard    │
+                  └──────────┬──────────┘
+                             │
+                 ┌───────────┴───────────┐
+                 ▼                       ▼
+          Upload Resume            Target Role
+                 │                       │
+                 └───────────┬───────────┘
+                             ▼
+                  ┌─────────────────────┐
+                  │   FastAPI Backend   │
+                  └──────────┬──────────┘
+                             │
+                             ▼
+                  ┌─────────────────────┐
+                  │ Extract PDF Text    │
+                  └──────────┬──────────┘
+                             │
+                             ▼
+                  ┌─────────────────────┐
+                  │   Google Gemini AI  │
+                  └──────────┬──────────┘
+                             │
+                             ▼
+                  ┌─────────────────────┐
+                  │ Resume Intelligence │
+                  └──────────┬──────────┘
+                             │
+                             ▼
+       ┌────────────┬────────┼────────┬────────────┐
+       ▼            ▼        ▼        ▼            ▼
+   ATS Score     Skills   Gaps    Strengths   Suggestions
+```
 
-Vercel deployment support
+---
 
-Tech Stack
+## 🛠️ Tech Stack
 
-Frontend
+### Frontend
 
-HTML5
+- HTML5
+- CSS3
+- JavaScript
+- Glassmorphism UI
 
-CSS3
+### Backend
 
-JavaScript
+- Python
+- FastAPI
+- Uvicorn
+- PyPDF
 
-Backend
+### Artificial Intelligence
 
-Python
+- Google Gemini API
+- Google GenAI SDK
 
-FastAPI
+### Authentication
 
-Uvicorn
+- JWT
+- PyJWT
+- pwdlib
+- Argon2 password hashing
 
-PyPDF
+### Database
 
-AI
+- SQLite for local development
+- PostgreSQL recommended for production
 
-Google Gemini API
+### Deployment
 
-Google GenAI SDK
+- Vercel
 
-Authentication
+---
 
-PyJWT
+## 📂 Project Structure
 
-pwdlib
-
-Argon2
-
-Database
-
-SQLite for local development
-
-PostgreSQL recommended for production
-
-Deployment
-
-Vercel
-
-Project Structure
-
+```text
 HireIQ/
+│
 ├── api/
 │   └── index.py
+│
 ├── backend/
 │   ├── __init__.py
 │   ├── analyzer.py
@@ -86,116 +164,183 @@ HireIQ/
 │   ├── database.py
 │   ├── main.py
 │   └── resume_parser.py
+│
 ├── index.html
 ├── style.css
 ├── script.js
 ├── requirements.txt
 ├── vercel.json
 ├── .env
-└── .gitignore
+├── .gitignore
+└── README.md
+```
 
-How It Works
+---
 
-User
-  ↓
-Register / Login
-  ↓
-JWT Authentication
-  ↓
-HireIQ Dashboard
-  ↓
-Enter Target Job Role + Upload Resume
-  ↓
-FastAPI Backend
-  ↓
-Extract Resume Text
-  ↓
-Google Gemini AI
-  ↓
-ATS Score + Skills + Strengths + Weaknesses + Suggestions
+## ⚡ Getting Started
 
-Installation
+### 1. Clone the repository
 
-1. Clone the repository
-
+```bash
 git clone https://github.com/LASHMISIMAN-K/HireIQ.git
 cd HireIQ
+```
 
-2. Create a virtual environment
+### 2. Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+### 3. Activate the environment
 
 Windows:
 
-python -m venv .venv
+```bash
 .venv\Scripts\activate
+```
 
-3. Install dependencies
+### 4. Install dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
-Environment Variables
+---
 
-Create a .env file in the project root:
+## 🔐 Environment Variables
 
+Create a `.env` file in the project root:
+
+```env
 GEMINI_API_KEY=your_gemini_api_key
 JWT_SECRET_KEY=your_jwt_secret
+```
 
 Generate a secure JWT secret:
 
+```bash
 python -c "import secrets; print(secrets.token_urlsafe(64))"
+```
 
-Never commit .env or expose API keys in frontend code.
+### ⚠️ Security
 
-Run Locally
+Never commit `.env` to GitHub.
+
+Recommended `.gitignore`:
+
+```gitignore
+.env
+hireiq.db
+__pycache__/
+*.pyc
+```
+
+---
+
+## ▶️ Run HireIQ Locally
 
 From the project root:
 
+```bash
 uvicorn backend.main:app --reload
+```
 
-The API will run at:
+Backend:
 
+```text
 http://127.0.0.1:8000
+```
 
-API Endpoints
+API health check:
 
-Health Check
+```text
+http://127.0.0.1:8000/api/
+```
 
-GET /api/
+Expected response:
 
-Register
+```json
+{
+  "message": "HireIQ API is running 🚀"
+}
+```
 
+---
+
+## 🔌 API Endpoints
+
+### Register
+
+```http
 POST /api/register
+```
 
-Example:
-
+```json
 {
   "name": "John Doe",
   "email": "john@example.com",
   "password": "password123"
 }
+```
 
-Login
+### Login
 
+```http
 POST /api/login
+```
 
-Current User
+```json
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
 
+### Current User
+
+```http
 GET /api/me
+```
+
+Header:
+
+```text
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Analyze Resume
+
+```http
+POST /api/analyze
+```
 
 Requires:
 
+```text
 Authorization: Bearer <JWT_TOKEN>
+```
 
-Resume Analysis
+Form data:
 
-POST /api/analyze
-
-Requires a JWT token and multipart form data:
-
+```text
 resume: resume.pdf
 job_role: Frontend Developer
+```
 
-Example AI Response
+---
 
+## 📊 Example Analysis
+
+For a target role such as:
+
+```text
+Frontend Developer
+```
+
+HireIQ can produce a report such as:
+
+```json
 {
   "ats_score": 82,
   "summary": "The resume is well aligned with the target role.",
@@ -210,7 +355,8 @@ Example AI Response
     "Testing"
   ],
   "strengths": [
-    "Strong frontend development skills"
+    "Strong frontend development skills",
+    "Relevant project experience"
   ],
   "weaknesses": [
     "Limited testing experience"
@@ -220,107 +366,165 @@ Example AI Response
     "Include testing experience"
   ]
 }
+```
 
-Authentication & Security
+---
 
-HireIQ uses JWT authentication to protect user-specific endpoints.
+## 🔒 Authentication Flow
 
-Passwords are hashed using Argon2 before being stored. Plain-text passwords are not stored.
+```text
+Register
+   ↓
+Password hashed with Argon2
+   ↓
+User stored in database
+   ↓
+JWT token generated
+   ↓
+Token stored by frontend
+   ↓
+Authenticated API requests
+   ↓
+Protected HireIQ features
+```
 
-Keep these secrets private:
+Plain-text passwords are not intended to be stored. Passwords are hashed before being saved.
 
-GEMINI_API_KEY
-JWT_SECRET_KEY
+---
 
-Recommended .gitignore entries:
+## ☁️ Deployment
 
-.env
-hireiq.db
-__pycache__/
-*.pyc
+HireIQ is structured for deployment on Vercel.
 
-Database
+FastAPI entry point:
 
-The development version uses SQLite.
-
-For production deployment on Vercel, use a persistent hosted PostgreSQL database instead of SQLite.
-
-Deployment
-
-HireIQ uses the FastAPI entry point:
-
+```text
 api/index.py
+```
 
-The entry point contains:
+Contents:
 
+```python
 from backend.main import app
+```
 
-Set the Vercel root directory to:
+Set the Vercel project root directory to:
 
+```text
 ./
+```
 
-Add these environment variables in Vercel:
+Add these environment variables to Vercel:
 
+```text
 GEMINI_API_KEY
 JWT_SECRET_KEY
+```
 
-For the current setup:
+For the current setup, `vercel.json` can contain:
 
+```json
 {}
+```
 
-can be used as vercel.json.
+### Production Database
 
-Future Improvements
+SQLite is suitable for local development.
 
-PostgreSQL production database
+For production, use a persistent hosted PostgreSQL database instead of relying on a local SQLite file in the serverless environment.
 
-Resume history
+---
 
-Job description analysis
+## 🎯 Why HireIQ?
 
-Resume-to-job compatibility score
+A resume is more than a document.
 
-Resume keyword optimization
+It is your **first conversation with a recruiter**.
 
-AI-powered resume improvement
+HireIQ helps turn that conversation into something stronger by answering:
 
-Cover letter generation
+> **"How well does my resume fit the job I want?"**
 
-Job recommendations
+Instead of blindly applying to jobs, users can identify gaps and improve their resume strategically.
 
-LinkedIn profile analysis
+---
 
-Resume PDF report generation
+## 🔮 Future Roadmap
 
-User profile management
+### Phase 1 — Core AI
 
-Analytics dashboard
+- [x] PDF resume parsing
+- [x] Target role analysis
+- [x] ATS-style scoring
+- [x] Skill matching
+- [x] Missing skill detection
+- [x] Strengths and weaknesses
+- [x] AI suggestions
 
-Use Case
 
-HireIQ is designed for students, fresh graduates, and job seekers who want to evaluate their resume before applying for a job.
+---
 
-Resume + Target Job Role
-          ↓
-       HireIQ AI
-          ↓
-      ATS Score
-          ↓
-Matched / Missing Skills
-          ↓
-Strengths / Weaknesses
-          ↓
-Improvement Suggestions
+## 💻 Example User Journey
 
-Author
+```text
+"I want a Frontend Developer job."
 
-LASHMISIMAN K
+              ↓
 
-B.Tech — Computer Science Engineering
+        Upload Resume
+
+              ↓
+
+       HireIQ analyzes it
+
+              ↓
+
+          ATS: 82/100
+
+              ↓
+
+     ┌──────────────────┐
+     │ Strong           │
+     │ HTML              │
+     │ CSS               │
+     │ JavaScript        │
+     │ React             │
+     └──────────────────┘
+
+              ↓
+
+     Missing:
+     TypeScript
+     Testing
+
+              ↓
+
+     Improve Resume
+
+              ↓
+
+       Apply with confidence 🚀
+```
+
+---
+
+## 👨‍💻 Author
+
+### LASHMISIMAN K
+
+B.Tech — Computer Science Engineering  
 IoT and Automation
 
 GitHub: https://github.com/LASHMISIMAN-K
 
-License
+---
+
+## ⭐ Support
+
+If you find HireIQ useful, consider giving the repository a ⭐ on GitHub.
+
+---
+
+## 📜 License
 
 This project is currently intended for educational and development purposes.
