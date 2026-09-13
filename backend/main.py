@@ -57,7 +57,7 @@ class LoginRequest(BaseModel):
     password: str
 
 
-@app.get("/")
+@app.get("/api/")
 def home():
 
     return {
@@ -69,7 +69,7 @@ def home():
 # REGISTER
 # -------------------------
 
-@app.post("/register")
+@app.post("/api/register")
 def register(data: RegisterRequest):
 
     name = data.name.strip()
@@ -142,7 +142,7 @@ def register(data: RegisterRequest):
 # LOGIN
 # -------------------------
 
-@app.post("/login")
+@app.post("/api/login")
 def login(data: LoginRequest):
 
     conn = get_connection()
@@ -199,7 +199,7 @@ def login(data: LoginRequest):
 # CURRENT USER
 # -------------------------
 
-@app.get("/me")
+@app.get("/api/me")
 def me(
     user=Depends(get_current_user)
 ):
@@ -211,7 +211,7 @@ def me(
 # PROTECTED ANALYZER
 # -------------------------
 
-@app.post("/analyze")
+@app.post("/api/analyze")
 async def analyze(
     resume: UploadFile = File(...),
     job_role: str = Form(...),
