@@ -7,6 +7,9 @@ from fastapi import (
     HTTPException
 )
 
+
+from fastapi.responses import FileResponse
+from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
@@ -33,6 +36,22 @@ app = FastAPI(
     title="HireIQ API"
 )
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+@app.get("/")
+def frontend():
+    return FileResponse(BASE_DIR / "index.html")
+
+
+@app.get("/style.css")
+def css():
+    return FileResponse(BASE_DIR / "style.css")
+
+
+@app.get("/script.js")
+def javascript():
+    return FileResponse(BASE_DIR / "script.js")
 
 app.add_middleware(
     CORSMiddleware,
