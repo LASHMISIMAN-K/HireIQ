@@ -9,14 +9,9 @@ const API_URL = "/api";
    PAGE ELEMENTS
 ===================================================== */
 
-const loginPage =
-    document.getElementById("loginPage");
-
-const registerPage =
-    document.getElementById("registerPage");
-
-const dashboardPage =
-    document.getElementById("dashboardPage");
+const loginPage = document.getElementById("loginPage");
+const registerPage = document.getElementById("registerPage");
+const dashboardPage = document.getElementById("dashboardPage");
 
 
 /* =====================================================
@@ -24,13 +19,9 @@ const dashboardPage =
 ===================================================== */
 
 function showLogin() {
-
     loginPage.classList.remove("hidden");
-
     registerPage.classList.add("hidden");
-
     dashboardPage.classList.add("hidden");
-
 }
 
 
@@ -39,13 +30,9 @@ function showLogin() {
 ===================================================== */
 
 function showRegister() {
-
     loginPage.classList.add("hidden");
-
     registerPage.classList.remove("hidden");
-
     dashboardPage.classList.add("hidden");
-
 }
 
 
@@ -54,13 +41,37 @@ function showRegister() {
 ===================================================== */
 
 function showDashboard() {
-
     loginPage.classList.add("hidden");
-
     registerPage.classList.add("hidden");
-
     dashboardPage.classList.remove("hidden");
+}
 
+
+/* =====================================================
+   SAFE API RESPONSE
+===================================================== */
+
+async function getResponseData(response) {
+
+    const text = await response.text();
+
+    if (!text) {
+        return {};
+    }
+
+    try {
+        return JSON.parse(text);
+    } catch (error) {
+
+        console.error(
+            "Server returned non-JSON response:",
+            text
+        );
+
+        return {
+            error: text
+        };
+    }
 }
 
 
@@ -76,24 +87,19 @@ async function registerUser() {
             .value
             .trim();
 
-
     const email =
         document
             .getElementById("registerEmail")
             .value
             .trim();
 
-
     const password =
         document
             .getElementById("registerPassword")
             .value;
 
-
     const status =
-        document.getElementById(
-            "registerStatus"
-        );
+        document.getElementById("registerStatus");
 
 
     /* Check fields */
@@ -104,7 +110,6 @@ async function registerUser() {
             "Please fill all fields.";
 
         return;
-
     }
 
 
@@ -116,7 +121,6 @@ async function registerUser() {
             "Password must contain at least 6 characters.";
 
         return;
-
     }
 
 
@@ -130,32 +134,24 @@ async function registerUser() {
             await fetch(
                 `${API_URL}/register`,
                 {
-
                     method: "POST",
 
                     headers: {
-
                         "Content-Type":
                             "application/json"
-
                     },
 
                     body: JSON.stringify({
-
                         name: name,
-
                         email: email,
-
                         password: password
-
                     })
-
                 }
             );
 
 
         const data =
-            await response.json();
+            await getResponseData(response);
 
 
         /* Backend error */
@@ -164,10 +160,15 @@ async function registerUser() {
 
             status.innerText =
                 data.detail ||
-                "Registration failed.";
+                data.error ||
+                `Registration failed (${response.status}).`;
+
+            console.error(
+                "REGISTER SERVER ERROR:",
+                data
+            );
 
             return;
-
         }
 
 
@@ -185,9 +186,7 @@ async function registerUser() {
 
 
         document
-            .getElementById(
-                "welcomeUser"
-            )
+            .getElementById("welcomeUser")
             .innerText =
             `Welcome, ${name} 👋`;
 
@@ -203,9 +202,7 @@ async function registerUser() {
 
         status.innerText =
             "Cannot connect to HireIQ backend.";
-
     }
-
 }
 
 
@@ -221,17 +218,13 @@ async function loginUser() {
             .value
             .trim();
 
-
     const password =
         document
             .getElementById("loginPassword")
             .value;
 
-
     const status =
-        document.getElementById(
-            "loginStatus"
-        );
+        document.getElementById("loginStatus");
 
 
     /* Check fields */
@@ -242,7 +235,6 @@ async function loginUser() {
             "Please enter email and password.";
 
         return;
-
     }
 
 
@@ -256,30 +248,23 @@ async function loginUser() {
             await fetch(
                 `${API_URL}/login`,
                 {
-
                     method: "POST",
 
                     headers: {
-
                         "Content-Type":
                             "application/json"
-
                     },
 
                     body: JSON.stringify({
-
                         email: email,
-
                         password: password
-
                     })
-
                 }
             );
 
 
         const data =
-            await response.json();
+            await getResponseData(response);
 
 
         /* Login failed */
@@ -288,10 +273,15 @@ async function loginUser() {
 
             status.innerText =
                 data.detail ||
-                "Invalid email or password.";
+                data.error ||
+                `Login failed (${response.status}).`;
+
+            console.error(
+                "LOGIN SERVER ERROR:",
+                data
+            );
 
             return;
-
         }
 
 
@@ -309,9 +299,7 @@ async function loginUser() {
 
 
         document
-            .getElementById(
-                "welcomeUser"
-            )
+            .getElementById("welcomeUser")
             .innerText =
             `Welcome back, ${data.user.name} 👋`;
 
@@ -327,9 +315,7 @@ async function loginUser() {
 
         status.innerText =
             "Cannot connect to HireIQ backend.";
-
     }
-
 }
 
 
@@ -352,7 +338,6 @@ async function loadUser() {
         showLogin();
 
         return;
-
     }
 
 
@@ -362,16 +347,12 @@ async function loadUser() {
             await fetch(
                 `${API_URL}/me`,
                 {
-
                     method: "GET",
 
                     headers: {
-
                         "Authorization":
                             `Bearer ${token}`
-
                     }
-
                 }
             );
 
@@ -387,18 +368,15 @@ async function loadUser() {
             showLogin();
 
             return;
-
         }
 
 
         const user =
-            await response.json();
+            await getResponseData(response);
 
 
         document
-            .getElementById(
-                "welcomeUser"
-            )
+            .getElementById("welcomeUser")
             .innerText =
             `Welcome back, ${user.name} 👋`;
 
@@ -415,10 +393,12 @@ async function loadUser() {
             error
         );
 
+        localStorage.removeItem(
+            "hireiq_token"
+        );
+
         showLogin();
-
     }
-
 }
 
 
@@ -446,7 +426,6 @@ function logoutUser() {
         results.classList.add(
             "hidden"
         );
-
     }
 
 
@@ -463,7 +442,6 @@ function logoutUser() {
 
 
     showLogin();
-
 }
 
 
@@ -488,7 +466,6 @@ async function analyzeResume() {
         showLogin();
 
         return;
-
     }
 
 
@@ -519,7 +496,6 @@ async function analyzeResume() {
             "Please upload a PDF resume.";
 
         return;
-
     }
 
 
@@ -531,7 +507,6 @@ async function analyzeResume() {
             "Please enter a target job role.";
 
         return;
-
     }
 
 
@@ -547,7 +522,6 @@ async function analyzeResume() {
             "Please upload a PDF file.";
 
         return;
-
     }
 
 
@@ -579,24 +553,20 @@ async function analyzeResume() {
             await fetch(
                 `${API_URL}/analyze`,
                 {
-
                     method: "POST",
 
                     headers: {
-
                         "Authorization":
                             `Bearer ${token}`
-
                     },
 
                     body: formData
-
                 }
             );
 
 
         const data =
-            await response.json();
+            await getResponseData(response);
 
 
         /* Authentication expired */
@@ -610,7 +580,6 @@ async function analyzeResume() {
             showLogin();
 
             return;
-
         }
 
 
@@ -621,10 +590,14 @@ async function analyzeResume() {
             status.innerText =
                 data.detail ||
                 data.error ||
-                "Something went wrong.";
+                `Something went wrong (${response.status}).`;
+
+            console.error(
+                "ANALYZE SERVER ERROR:",
+                data
+            );
 
             return;
-
         }
 
 
@@ -634,7 +607,6 @@ async function analyzeResume() {
                 data.error;
 
             return;
-
         }
 
 
@@ -658,9 +630,7 @@ async function analyzeResume() {
 
         status.innerText =
             "Cannot connect to HireIQ backend.";
-
     }
-
 }
 
 
@@ -716,7 +686,6 @@ function displayResults(data) {
         "suggestions",
         data.suggestions || []
     );
-
 }
 
 
@@ -724,13 +693,15 @@ function displayResults(data) {
    DISPLAY SKILLS
 ===================================================== */
 
-function displaySkills(
-    id,
-    skills
-) {
+function displaySkills(id, skills) {
 
     const container =
         document.getElementById(id);
+
+
+    if (!container) {
+        return;
+    }
 
 
     container.innerHTML = "";
@@ -756,10 +727,8 @@ function displaySkills(
             container.appendChild(
                 span
             );
-
         }
     );
-
 }
 
 
@@ -767,13 +736,15 @@ function displaySkills(
    DISPLAY LIST
 ===================================================== */
 
-function displayList(
-    id,
-    items
-) {
+function displayList(id, items) {
 
     const list =
         document.getElementById(id);
+
+
+    if (!list) {
+        return;
+    }
 
 
     list.innerHTML = "";
@@ -795,10 +766,8 @@ function displayList(
             list.appendChild(
                 li
             );
-
         }
     );
-
 }
 
 
@@ -827,6 +796,5 @@ window.addEventListener(
             showLogin();
 
         }
-
     }
 );

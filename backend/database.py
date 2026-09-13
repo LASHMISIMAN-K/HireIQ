@@ -1,6 +1,7 @@
 import sqlite3
+import os
 
-DB_NAME = "hireiq.db"
+DB_NAME = "/tmp/hireiq.db"
 
 
 def get_connection():
@@ -10,7 +11,6 @@ def get_connection():
 
 
 def create_database():
-
     conn = get_connection()
 
     conn.execute("""
