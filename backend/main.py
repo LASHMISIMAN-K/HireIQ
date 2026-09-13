@@ -8,7 +8,6 @@ from fastapi import (
 )
 
 from fastapi.middleware.cors import CORSMiddleware
-
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -18,6 +17,7 @@ import os
 from backend.resume_parser import extract_text
 from backend.analyzer import analyze_Resume
 from backend.database import create_database, get_connection
+
 from backend.auth import (
     hash_password,
     verify_password,
