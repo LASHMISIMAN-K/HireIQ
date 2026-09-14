@@ -84,7 +84,7 @@ def get_current_user(
         """
         SELECT id, name, email
         FROM users
-        WHERE id = ?
+        WHERE id = %s
         """,
         (user_id,)
     ).fetchone()
@@ -99,4 +99,4 @@ def get_current_user(
         )
 
 
-    return dict(user)
+    return user
